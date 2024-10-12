@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Me</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        Karma's<br />
+        Journey
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="aboutme.html">About Me</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Testimonial</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="contact.html">Contact Me</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="contact-section">
+      <h2>Contact Me</h2>
+      <div class="contact-container">
+        <form
+          class="contact-form"
+          id="contactForm"
+          onsubmit="return handleSubmit()"
+        >
+          <input type="text" placeholder="Full Name" required />
+
+          <input type="email" id="email" placeholder="email" required />
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            minlength="8"
+            required
+          />
+
+          <div class="split-input">
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Mobile Number"
+              required
+              pattern="[0-9]{8}"
+            />
+            <input type="text" placeholder="email Subject" required />
+          </div>
+
+          <textarea
+            placeholder="Plese write your Message"
+            rows="5"
+            required
+          ></textarea>
+          <button type="submit" onclick="sendEmail()">Send Message</button>
+        </form>
+
+        <div class="contact-details">
+          <p>
+            <i class="icon-envelope"><a href="#" class="fa fa-envelope"></a></i>
+            Karma@gmail.com
+          </p>
+          <p>
+            <i class="icon-globe"><a href="#" class="fa fa-globe"> </a> </i
+            >https://karma'slife.com
+          </p>
+          <p>
+            <i class="icon-phone"> <a href="#" class="fa fa-phone"></a></i>
+            73457-4578457
+          </p>
+          <div class="social-icons">
+            <i class="icon-instagram"
+              ><a href="#" class="fa fa-instagram"></a
+            ></i>
+            <i class="icon-facebook"><a href="#" class="fa fa-facebook"></a></i>
+            <i class="icon-youtube"><a href="#" class="fa fa-youtube"></a></i>
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr />
+    <footer>
+      <div class="footer-links">
+        <div class="row">
+          <ul>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#life">My Daily Life</a></li>
+            <li><a href="#reflection">Reflection</a></li>
+            <li><a href="#challenges">Challenges</a></li>
+          </ul>
+        </div>
+        <div class="row">
+          <ul>
+            <li><a href="#career">Career</a></li>
+            <li><a href="#hobbies">Hobbies</a></li>
+            <li><a href="#future">Future Plan</a></li>
+            <li><a href="#goals">My Goals</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <!-- for reference visit: https://smtpjs.com/ -->
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script>
+      function sendEmail() {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const phone = document.getElementById("phone").value;
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value;
+
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          alert("Please enter a valid email address.");
+          return false;
+        }
+
+        if (password.length < 8) {
+          alert("Password must be at least 8 characters long.");
+          return false;
+        }
+
+        const phonePattern = /^[0-9]{8}$/;
+        if (!phonePattern.test(phone)) {
+          alert("Please enter a valid 8-digit phone number.");
+          return false;
+        }
+
+        Email.send({
+          SecureToken: "secure_token", // Replace Secure Token from smtpjs.com
+          To: "Karma@gmail.com",
+          From: email,
+          Subject: subject,
+          Body: `
+                <h3>New Contact Message</h3>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <p><strong>Message:</strong><br>${message}</p>
+            `,
+        }).then((response) => {
+          if (response === "OK") {
+            alert("Successfully sent message!");
+          } else {
+            console.error("Error sending email:", response);
+            alert("Message Sent Unsuccessful. Please try again.");
+          }
+        });
+
+        // alert("Successfully sent message!");
+        // return true;
+      }
+    </script>
+  </body>
+</html>
