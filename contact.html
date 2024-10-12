@@ -9,6 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
   </head>
   <body>
     <header>
@@ -32,46 +33,28 @@
     <section class="contact-section">
       <h2>Contact Me</h2>
       <div class="contact-container">
-        <form
-          class="contact-form"
-          id="contactForm"
-          onsubmit="return handleSubmit()"
-        >
-          <input type="text" placeholder="Full Name" required />
+        <form class="contact-form" id="submit">
+          <input type="text" id="name" placeholder="Full Name" />
 
-          <input type="email" id="email" placeholder="email" required />
-
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            minlength="8"
-            required
-          />
+          <input type="email" id="email" placeholder="email" />
 
           <div class="split-input">
-            <input
-              type="tel"
-              id="phone"
-              placeholder="Mobile Number"
-              required
-              pattern="[0-9]{8}"
-            />
-            <input type="text" placeholder="email Subject" required />
+            <input type="tel" id="phone" placeholder="Mobile Number" />
+            <input type="text" id="subject" placeholder="email Subject" />
           </div>
 
           <textarea
+            id="message"
             placeholder="Plese write your Message"
             rows="5"
-            required
           ></textarea>
-          <button type="submit" onclick="sendEmail()">Send Message</button>
+          <button type="submit">Send Message</button>
         </form>
 
         <div class="contact-details">
           <p>
             <i class="icon-envelope"><a href="#" class="fa fa-envelope"></a></i>
-            Karma@gmail.com
+            karmadrupthop@gmail.com
           </p>
           <p>
             <i class="icon-globe"><a href="#" class="fa fa-globe"> </a> </i
@@ -91,6 +74,9 @@
         </div>
       </div>
     </section>
+
+    <script src="./sender.js"></script>
+
     <hr />
     <footer>
       <div class="footer-links">
@@ -113,58 +99,33 @@
       </div>
     </footer>
 
-    <!-- for reference visit: https://smtpjs.com/ -->
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script>
       function sendEmail() {
         event.preventDefault();
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const phone = document.getElementById("phone").value;
-        const subject = document.getElementById("subject").value;
-        const message = document.getElementById("message").value;
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const phone = document.getElementById("phone");
 
         const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailPattern.test(email)) {
+        if (!emailPattern.test(email.value)) {
           alert("Please enter a valid email address.");
           return false;
         }
 
-        if (password.length < 8) {
+        if (password.value.length < 8) {
           alert("Password must be at least 8 characters long.");
           return false;
         }
 
         const phonePattern = /^[0-9]{8}$/;
-        if (!phonePattern.test(phone)) {
+        if (!phonePattern.test(phone.value)) {
           alert("Please enter a valid 8-digit phone number.");
           return false;
         }
 
-        Email.send({
-          SecureToken: "secure_token", // Replace Secure Token from smtpjs.com
-          To: "Karma@gmail.com",
-          From: email,
-          Subject: subject,
-          Body: `
-                <h3>New Contact Message</h3>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Phone:</strong> ${phone}</p>
-                <p><strong>Message:</strong><br>${message}</p>
-            `,
-        }).then((response) => {
-          if (response === "OK") {
-            alert("Successfully sent message!");
-          } else {
-            console.error("Error sending email:", response);
-            alert("Message Sent Unsuccessful. Please try again.");
-          }
-        });
-
-        // alert("Successfully sent message!");
-        // return true;
+        alert("Successfully sent message!");
+        return true;
       }
     </script>
   </body>
